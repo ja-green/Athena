@@ -1,13 +1,50 @@
-# binaries for programs and plugins
-*.exe
-*.exe~
+# object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# linker output
+*.ilk
+*.map
+*.exp
+
+# precompiled headers
+*.gch
+*.pch
+
+# libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# shared objects (inc. windows ddls)
 *.dll
 *.so
+*.so.*
 *.dylib
 
-# test binary, build with `go test -c`
-*.test
-
-# output of the go coverage tool
+# executables
+*.exe
 *.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# kernel module compile results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.confe.out
 
