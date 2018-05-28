@@ -15,6 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+
 static void report(const char *prefix, const char *err, va_list params) {
         fputs(prefix, stderr);
         vfprintf(stderr, err, params);
