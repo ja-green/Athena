@@ -31,30 +31,27 @@
 #include "usage.c"
 
 static const char *hash_string_usage =
-    "athena-hash-string [-m <mode>] [string...]";
+  "athena-hash-string [-m <mode>] [string...]";
 
 static struct option long_options[] = {
-    {"mode", 	required_argument, 	NULL, 	'm' },
-    {NULL,	0, 			NULL, 	0 }
+  {"mode", 	required_argument, 	NULL, 	'm' },
+  {NULL,	0, 			NULL, 	0 }
 };
 
 int get_hash(unsigned int mode) {
-    return mode;
+  return mode;
 }
 
 int main(int argc, char **argv) {
-    unsigned int opt	= 0;
-    unsigned int mode	= 0;
+  unsigned int opt	= 0;
+  unsigned int mode	= 0;
 
-    while ((opt = getopt_long(argc, argv, ":m:", long_options, NULL)) != -1) {
-        switch (opt) {
-        case 'm': 	mode = atoi(optarg);		break;
-
-        default: 	usage(hash_string_usage);	break;
-
-        }   
-    }
+  while ((c = getopt_long(argc, argv, "hv", long_options, NULL)) != -1) {
+    switch (c) {
+      case 'h':	cmd = "help"; 		break;
+      case 'v':	cmd = "version";	break;
+  	}	
+  }
     
-    printf("mode is %d\n", get_hash(mode));
+  printf("mode is %d\n", get_hash(mode));
 }
-
