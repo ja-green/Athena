@@ -10,20 +10,16 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-  int cmd_argc;
-  char cmd_argv[argc];
-
-
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>     /* for printf */
-#include <stdlib.h>    /* for exit */
+#include <stdlib.h>
 #include <string.h>
 
 #include "command.h"
+#include "usage.h"
 
 int main(int argc, const char **argv) {
   const char *cmd; 
@@ -53,11 +49,14 @@ int main(int argc, const char **argv) {
   argv[0] = cmd;
 
   if (is_builtin(cmd) == 0) {
-    printf("its a builtin!\n"); 
-    exit(EXIT_SUCCESS); 
+    if (exec_builtin(cmd, argc, argv) == 0) {
+      exit(EXIT_SUCCESS);
+
+    } else {
+      exit(EXIT_FAILURE);
+    }
 
   } else {
-    printf("its not a builtin!\n"); 
-    exit(EXIT_FAILURE); 
+    die("'%s' is not a recognised athena command", cmd);
   }
 }

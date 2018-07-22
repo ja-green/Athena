@@ -15,10 +15,45 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>     /* for printf */
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
-int cmd_version(int argc, const char **argv) {
-  printf("cmd_version");
+int fexists(const char *f, int pbits) {
+  if (access(f, pbits) == 0) {
+    return EXIT_SUCCESS;
+  } else {
+    return EXIT_FAILURE;
+  }
+}
+
+int get_from_path(const char *buf, const char *f) {
+  char *dir, *path = getenv("PATH");
+  
+  for (dir = strtok(path, ":"); dir; dir = strtok(NULL, ":")) {
+    printf("%s\n", dir);
+  }
 
   return 0;
+}
+
+int execv_external(const char *f, const char *argv) {
+  int pid, status;
+
+  pid = fork();
+
+  if (pid == 0) {
+    execvp(f, argv);
+    return EXIT_FAILURE;
+
+  } else if (pid == -1) {
+    return EXIT_FAILURE;
+    
+  } else {
+    wait(&status);
+
+    return status;
+  }
 }

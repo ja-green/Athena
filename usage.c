@@ -19,35 +19,38 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
+#include "usage.h"
+
 static void report(const char *prefix, const char *err, va_list params) {
-        fputs(prefix, stderr);
-        vfprintf(stderr, err, params);
-        fputs("\n", stderr);
-}
-
-void usage(const char *err) {
-        fprintf(stderr, "usage: %s\n", err);
-
-        exit(1);
+  fputs(prefix, stderr);
+  vfprintf(stderr, err, params);
+  fputs("\n", stderr);
 }
 
 void die(const char *err, ...) {
-        va_list params;
+  va_list params;
 
-        va_start(params, err);
-        report("fatal: ", err, params);
-        va_end(params);
+  va_start(params, err);
+  report("fatal: ", err, params);
+  va_end(params);
 
-        exit(1);
+  exit(EXIT_FAILURE);
 }
 
-int error(const char *err, ...) {
-        va_list params;
+void error(const char *err, ...) {
+  va_list params;
 
-        va_start(params, err);
-        report("error: ", err, params);
-        va_end(params);
+  va_start(params, err);
+  report("error: ", err, params);
+  va_end(params);
 
-	return -1;
+  exit(EXIT_FAILURE);
 }
 
+void warn(const char *err, ...) {
+  va_list params;
+
+  va_start(params, err);
+  report("error: ", err, params);
+  va_end(params);
+}
