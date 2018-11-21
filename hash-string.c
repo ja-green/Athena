@@ -21,46 +21,42 @@
 #include <unistd.h>
 #include <string.h>
 
-#include "command.h"
-#include "external.h"
 #include "usage.h"
+#include "md5.h"
 
-static const char *main_usage =
-  "athena [<command>] [subcommand] [options]";
-
-static const char *help_usage =
-  "athena help [<subcommand>] [options]";
+static const char *hash_string_usage =
+  "athena hash-string [options] <string>";
 
 static struct option long_options[] = {
-  {"all",  no_argument, 	NULL, 	'a' },
   {"help", no_argument, 	NULL, 	'h' },
-  {"man",  no_argument, 	NULL, 	'm' },
 };
 
-int cmd_help(int argc, const char **argv) {
-  int c, show_all, show_hlp, show_man;
+int cmd_hash_string(int argc, const char **argv) {
+  int c, show_hlp;
 
-  while ((c = getopt_long(argc, argv, "ahm", long_options, NULL)) != -1) {
+  while ((c = getopt_long(argc, argv, "h", long_options, NULL)) != -1) {
     switch (c) {
-      case 'a':	show_all = 1; break;
       case 'h':	show_hlp = 1; break;
-      case 'm':	show_man = 1;	break;
-  	}	
+    }
   }
 
-  if (argc == 1) {
-    usage(main_usage);
+  if (show_hlp == 1) {
+    usage(hash_string_usage);
+  }
 
-  } else if (show_all == 1) {
-    ls_commands();
-    puts("\nsee 'athena help' for help with a specific command, component or concept");
+  if (argv[1] == NULL) {
+    die("no input string specified");
+  } else {
+    size_t len = strlen(argv[1]);
+    uint8_t digest[16];
 
-  } else if (show_hlp == 1) {
-    usage(help_usage);
+    md5(argv[1], len, digest);
 
-  } else if (show_man == 1) {
-    char *manargs[] = {"man", "athena", (char *) NULL};
-    execv_external("man", manargs);
+    for (int i = 0; i < 16; i++) {
+      printf("%2.2x", digest[i]);
+    }
+
+    printf("\n");
   }
 
   return EXIT_SUCCESS;

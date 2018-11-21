@@ -21,9 +21,9 @@
 
 #include "usage.h"
 
-static void report(const char *prefix, const char *err, va_list params) {
+static void report(const char *prefix, const char *str, va_list params) {
   fputs(prefix, stderr);
-  vfprintf(stderr, err, params);
+  vfprintf(stderr, str, params);
   fputs("\n", stderr);
 }
 
@@ -51,6 +51,16 @@ void warn(const char *err, ...) {
   va_list params;
 
   va_start(params, err);
-  report("error: ", err, params);
+  report("warn: ", err, params);
   va_end(params);
+}
+
+void usage(const char *text, ...) {
+  va_list params;
+
+  va_start(params, text);
+  report("usage: ", text, params);
+  va_end(params);
+
+  exit(EXIT_SUCCESS);
 }

@@ -2,6 +2,7 @@
 #define COMMAND_H
 
 /* builtin declarations */
+extern int cmd_hash_string(int argc, const char **argv);
 extern int cmd_help(int argc, const char **argv);
 extern int cmd_version(int argc, const char **argv);
 

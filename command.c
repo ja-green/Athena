@@ -22,8 +22,9 @@
 #include "command.h"
 
 struct builtin builtins[] = {
-  {"help",    cmd_help,    "show help information"},
-  {"version", cmd_version, "show version information"},
+  {"hash-string",  cmd_hash_string,  "calculate the checksum of a single string"},
+  {"help",         cmd_help,         "show help information"},
+  {"version",      cmd_version,      "show version information"},
 };
 
 void ls_commands(void) {
@@ -33,7 +34,7 @@ void ls_commands(void) {
   for (int i = 0; i < cmd_amt; i++) {
     struct builtin *b = builtins + i;
 
-    printf("  %-10s %s\n", b->cmd, b->desc);
+    printf("  %-15s %s\n", b->cmd, b->desc);
   }
 }
 
