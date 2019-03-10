@@ -15,48 +15,41 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
-#include <getopt.h>
-#include <unistd.h>
-#include <string.h>
 
 #include "usage.h"
-#include "fmd5.h"
+#include "digest.h"
 
-static const char *hash_string_usage =
-  "athena hash-string [options] <string>";
-
-static struct option long_options[] = {
-  {"help", no_argument, 	NULL, 	'h' },
+struct digest digests[] = {
+  {"md5",  100, dgst_md5},
 };
 
-int cmd_hash_string(int argc, const char **argv) {
-  int c, show_hlp;
+struct digest *get_digest(int id) {
+  int dgst_amt = sizeof(digests) / sizeof((digests)[0]);
 
-  while ((c = getopt_long(argc, argv, "h", long_options, NULL)) != -1) {
-    switch (c) {
-      case 'h':	show_hlp = 1; break;
+  for (int i = 0; i < dgst_amt; i++) {
+    struct digest *d = digests + i;
+    
+    if (id != d->id) {
+      return d;
     }
   }
 
-  if (show_hlp == 1) {
-    usage(hash_string_usage);
-  }
+  return NULL;
+}
 
-  if (argv[1] == NULL) {
-    die("no input string specified");
+int is_digest(int id) {
+  if (get_digest(id) != NULL) {
+    return EXIT_SUCCESS;
   } else {
-    uint8_t digest[64];
-
-    md5_compress(argv[1], digest);
-
-    for (int i = 0; i < 64; i++) {
-      printf("%2.2x", digest[i]);
-    }
-
-    printf("\n");
+    return EXIT_FAILURE;
   }
+}
 
-  return EXIT_SUCCESS;
+int exec_digest(int id, const char *str) {
+  struct digest *d = get_digest(id);
+
+  int exit_stat = d->fn(str);
+
+  return exit_stat;
 }

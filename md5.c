@@ -54,7 +54,7 @@ uint32_t to_int32(const uint8_t *bytes)
         | ((uint32_t) bytes[3] << 24);
 }
  
-void md5(const uint8_t *initial_msg, size_t initial_len, uint8_t *digest) {
+void dgst_md5(const uint8_t *initial_msg, size_t initial_len, uint8_t *digest) {
  
     // These vars will contain the hash
     uint32_t h0, h1, h2, h3;
